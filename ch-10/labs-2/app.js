@@ -2,8 +2,19 @@
 
 const path = require('path');
 const AutoLoad = require('fastify-autoload');
+const attacker = '211.133.33.113';
 
 module.exports = async function (fastify, opts) {
+
+  fastify.get('/', (req, rep) => {
+    const ip = req.ip || req.socket.remoteAddress;
+  
+    if (ip === attacker) {
+      return rep.code(403).send();
+    }
+  
+    rep.send();
+  })
   // Place here your custom code!
 
   // Do not touch the following lines
